@@ -26,6 +26,8 @@ SECRET_KEY = 'django-insecure-uf=nofj($+j8w(%#49x(##ssobfjig1^2k%4es7^i$+#_atxmi
 DEBUG = True
 
 ALLOWED_HOSTS = []
+SITE_URL = 'http://localhost:8010'
+SITE_ID = 1
 
 
 # Application definition
@@ -37,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'callboard.apps.CallboardConfig',
 ]
 
 MIDDLEWARE = [

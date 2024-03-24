@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -19,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-uf=nofj($+j8w(%#49x(##ssobfjig1^2k%4es7^i$+#_atxmi'
+SECRET_KEY =  os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,6 +40,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',
+    'allauth',
+    'allauth.account',
+
     'callboard.apps.CallboardConfig',
 ]
 
@@ -45,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -124,3 +132,31 @@ STATICFILES_DIRS = [STATIC_NEWS]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 ADMINS = [('tar', 'tar800@gmail.com'), ]  # список всех админов в формате ('имя', 'их почта')
+
+#  Needed to login by username in Django admin, regardless of `allauth`
+# `allauth` specific authentication methods, such as login by e-mail
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+# Основные настройки
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'  # вы можете войти, выбрав имя user или адрес почты
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_LOGOUT_ON_GET = False  # Пользователь выходит из системы (требуется подтверждение)
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_FORMS = {'signup': 'callboard.forms.CommonSignupForm'}
+
+# После проверки, вошел ли пользователь в систему,
+# укажите адрес перенаправления пользователя, который не вошел в систему
+LOGIN_URL = '/accounts/login/'
+LOGOUT_REDIRECT_URL = '/profile/'
+LOGIN_REDIRECT_URL = '/'
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+EMAIL_USE_SSL = True
+EMAIL_USE_TLS = True  # Здесь должно быть True, Иначе отправка не удалась

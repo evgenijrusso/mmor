@@ -49,6 +49,16 @@ files = [
 Django = ">=3.2"
 
 [[package]]
+name = "dotenv-python"
+version = "0.0.1"
+description = "Read .env(-ish) configuration file for python web applications."
+optional = false
+python-versions = "*"
+files = [
+    {file = "dotenv-python-0.0.1.zip", hash = "sha256:362e170ca8fd69a70c1aca1fda2ddad0ac270e161e81e59f4039ec11decc14fa"},
+]
+
+[[package]]
 name = "sqlparse"
 version = "0.4.4"
 description = "A non-validating SQL parser."
@@ -78,4 +88,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "d8435b0aa69517046ac878c9131dded93fe0933c9463f6b64642c37156c11358"
+content-hash = "a36a4e50ffd034aba89f58407abae4234dae1cb22aafd1d8387bada4ffa9ae6a"

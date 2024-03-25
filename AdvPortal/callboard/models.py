@@ -45,12 +45,14 @@ class Category(models.Model):
 class Advert(models.Model):
     """ Объявление """
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT,
-                             verbose_name='Author of the ad', related_name='adverts'
-                             )
-    category = models.ForeignKey(Category, null=True, on_delete=models.PROTECT,
-                                 verbose_name='Category', related_name='adverts'
-                                 )
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.PROTECT,
+        verbose_name='Author of the ad', related_name='adverts',
+    )
+    category = models.ForeignKey(
+        Category, on_delete=models.PROTECT,
+        verbose_name='Category', related_name='adverts'
+    )
     # adr_filter = models.ForeignKey(FilterAdvert, on_delete=models.CASCADE,
     #                                null=True, blank=True, verbose_name='Adr filter'
     #                                )
@@ -69,7 +71,7 @@ class Advert(models.Model):
 #     )
 
     def __str__(self):
-        return f'{self.title}'
+        return f'{self.title}, {self.category}, {self.created}'
 
     def get_absolute_url(self):  # 'pk' как в url.py, иначе не работает
         return reverse('advert_detail', kwargs={'pk': self.pk})  # как вариант f'/adverts/{self.id}'
@@ -84,13 +86,13 @@ class Response(models.Model):
     text = models.TextField(_('Reply text'))  # Текст ответа
     response_date = models.DateTimeField(auto_now_add=True, verbose_name=_('Date of response'))  # Дата ответа
     advert = models.ForeignKey(
-        Advert, null=True, blank=True,
+        Advert,
         on_delete=models.CASCADE,
         verbose_name=_('Advert'),
         related_name='responses'
     )
     user = models.ForeignKey(
-        User, null=True, blank=True,
+        User,
         on_delete=models.CASCADE,
         verbose_name='Author of the ad',
         related_name='responses'

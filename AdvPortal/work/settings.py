@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY =  os.getenv('SECRET_KEY')
+SECRET_KEY = os.getenv('SECRET_KEY')  # 'django-insecure-uf=nofj($+j8w(%#49x(##ssobfjig1^2k%4es7^i$+#_atxmi'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -154,9 +154,9 @@ LOGIN_URL = '/accounts/login/'
 LOGOUT_REDIRECT_URL = '/profile/'
 LOGIN_REDIRECT_URL = '/'
 
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 465
-EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
-EMAIL_USE_SSL = True
-EMAIL_USE_TLS = True  # Здесь должно быть True, Иначе отправка не удалась
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 465
+# EMAIL_HOST_USER = 'tar'                      # os.getenv("EMAIL_HOST_USER")
+# EMAIL_HOST_PASSWORD = 'OTQvZ18HwEG1JzZ3d4Bj'                 #os.getenv("EMAIL_HOST_PASSWORD")
+# EMAIL_USE_SSL = True
+# EMAIL_USE_TLS = True  # Здесь должно быть True, Иначе отправка не удалась

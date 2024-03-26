@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY')  # 'django-insecure-uf=nofj($+j8w(%#49x(##ssobfjig1^2k%4es7^i$+#_atxmi'
+SECRET_KEY = os.getenv('SECRET_KEY')  #'django-insecure-uf=nofj($+j8w(%#49x(##ssobfjig1^2k%4es7^i$+#_atxmi'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
+    'django_bootstrap5',
     'allauth',
     'allauth.account',
 
@@ -72,6 +73,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request',
             ],
         },
     },
@@ -139,6 +141,7 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 )
+
 # Основные настройки
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'  # вы можете войти, выбрав имя user или адрес почты
 ACCOUNT_EMAIL_REQUIRED = True
@@ -154,9 +157,12 @@ LOGIN_URL = '/accounts/login/'
 LOGOUT_REDIRECT_URL = '/profile/'
 LOGIN_REDIRECT_URL = '/'
 
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_PORT = 465
-# EMAIL_HOST_USER = 'tar'                      # os.getenv("EMAIL_HOST_USER")
-# EMAIL_HOST_PASSWORD = 'OTQvZ18HwEG1JzZ3d4Bj'                 #os.getenv("EMAIL_HOST_PASSWORD")
-# EMAIL_USE_SSL = True
+EMAIL_HOST = 'smtp.yandex.ru'       # 'smtp.gmail.com'
+EMAIL_PORT = 465   # 587
+EMAIL_USE_SSL = True
+
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
+
 # EMAIL_USE_TLS = True  # Здесь должно быть True, Иначе отправка не удалась

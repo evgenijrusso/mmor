@@ -13,7 +13,7 @@ class CommonSignupForm(SignupForm):
         # Ensure you call the parent class's save. Save() returns a User object.
         user = super(CommonSignupForm, self).save(request)
         user.is_active = False
-        code = ''.join(random.sample(hexdigits, k=5))
+        code = ''.join(random.sample(hexdigits, 5))
         user.code = code
         user.save()
         send_mail(

@@ -5,9 +5,9 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 CATEGORY = [
-    ('Tanks', 'Танки'), (' Healers', 'Хилы',), ('DD', 'ДД'), ('Merchants', 'Торговцы'),
-    ('Guildmasters', 'Гилдмастеры'), ('Questgivers', 'Квестгиверы'), ('Blacksmiths', 'Кузнецы'),
-    ('Tanners', 'Кожевники'), ('Alchemists', 'Зельевары'), ('Spell Masters', 'Мастера заклинаний')
+    ('tanks', _('Tanks')), ('healers', _('Healers')), ('dd', _('DD')), ('merchants', _('Merchants')),
+    ('guildmasters', _('Guildmasters')), ('questgivers', _('Questgivers')), ('blacksmiths', _('Blacksmiths')),
+    ('tanners', _('Tanners')), ('alchemists', _('Alchemists')), ('spell_masters', _('Spell Masters'))
 ]
 
 
@@ -16,32 +16,6 @@ class User(AbstractUser):
     code = models.CharField(max_length=15, blank=True, null=True, verbose_name=_('Code'))  # доп. поле для user
 
 
-class Category(models.Model):
-    name = models.CharField(_('Name of category'), max_length=100, unique=True)
-
-    def __str__(self):
-        return f'{self.name}'
-
-    def get_absolute_url(self):
-        return reverse('category_detail', kwargs={'pk': self.pk})  # ('blog: detail', kwargs = {'pk': self.pk})
-
-    class Meta:
-        verbose_name = _('Category')
-        verbose_name_plural = _('Categories')
-        ordering = ['-name']
-
-
-# class FilterAdvert(models.Model):
-#     name = models.CharField(_('Name of Advert filter'), max_length=100, unique=True)
-#
-#     def __str__(self):
-#         return f'{self.name}'
-#
-#     class Meta:
-#         verbose_name = _('Advert filter')
-#         verbose_name_plural = _('Advert filters')
-#
-
 class Advert(models.Model):
     """ Объявление """
 
@@ -49,26 +23,13 @@ class Advert(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.PROTECT,
         verbose_name='Author of the ad', related_name='adverts',
     )
-    category = models.ForeignKey(
-        Category, on_delete=models.PROTECT,
-        verbose_name='Category', related_name='adverts'
-    )
-    # adr_filter = models.ForeignKey(FilterAdvert, on_delete=models.CASCADE,
-    #                                null=True, blank=True, verbose_name='Adr filter'
-    #                                )
+    category = models.CharField(_('Category'), max_length=20, choices=CATEGORY)
     title = models.CharField(_('Title'), max_length=100)
     content = models.TextField(_('Description'))  # Описание
     price = models.DecimalField(_('Price'), null=True, blank=True, max_digits=7, decimal_places=1)
     contacts = models.TextField(_('Contacts'))  # Контакты
     created = models.DateTimeField(auto_now_add=True, verbose_name='Created data')
-#    video = models.FileField(upload_to='videos/', blank=True, null=True, verbose_name='Video')
-#    image = models.FileField(upload_to='image/', blank=True, null=True, verbose_name='Image')
-#     image = models.ForeignKey(
-#         'callboard.gallery.Gallery',
-#         blank=True, null=True,
-#         on_delete=models.SET_NULL,
-#         verbose_name='Image'
-#     )
+    file = models.FileField("File", upload_to="files/", blank=True, null=True)
 
     def __str__(self):
         return f'{self.title}, {self.category}, {self.created}'

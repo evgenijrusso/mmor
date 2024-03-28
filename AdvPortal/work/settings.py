@@ -28,7 +28,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')  #'django-insecure-uf=nofj($+j8w(%#49x(##ss
 DEBUG = True
 
 ALLOWED_HOSTS = []
-SITE_URL = 'http://localhost:8010'
+SITE_URL = 'http://localhost:8025'
 SITE_ID = 1
 
 # Application definition
@@ -164,5 +164,5 @@ EMAIL_USE_SSL = True
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
-
-# EMAIL_USE_TLS = True  # Здесь должно быть True, Иначе отправка не удалась
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'   # для работы в консоле
+EMAIL_USE_TLS = False  # для Яндекса

@@ -1,0 +1,25 @@
+{% extends 'default.html' %}
+{% block title %} {{ get_title }} {% endblock title %}
+
+{% load i18n %}
+
+{% block content %}
+<div class="container d-grid gap-3">
+    <div class="p-2 bg-light border">
+        <h3 class="text-center"></h3>
+    </div>
+    <form action="" method="post" novalidate>
+      {% csrf_token %}
+<!--        {{ form.as_p }}-->
+       <div class="mb-3">
+            <h4>{% trans "User" %}: {{ form.user }}</h4>
+            <h4>{% trans "Title" %}: {{ form.title }} </h4>
+            <h4>{% trans "Category" %}: {{ form.category }}</h4>
+            <h4>{% trans "Contacts" %} {{ form.contacts }} </h4>
+            <h4>{% trans "Price" %} {{ form.contacts }} </h4>
+            <h4>{% trans "Content" %}: {{ form.content }} </h4>
+            <input class="btn btn-lg btn-primary" type="submit" value="save" />
+      </div>
+    </form>
+</div>
+{% endblock content %}

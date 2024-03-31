@@ -1,8 +1,12 @@
+from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
-from django.views.generic import View, UpdateView, TemplateView
+from django.views.generic import View, UpdateView, TemplateView, \
+    ListView, DetailView, CreateView, DeleteView
 from django.http.response import HttpResponse
-from .models import Advert, User
+from AdvPortal.callboard.models import Advert, User
+from AdvPortal.callboard.forms import AdvertForm
+from datetime import date
 
 
 class Index(View):
@@ -15,6 +19,71 @@ class Index(View):
         return HttpResponse(render(request, 'callboard/index.html', context))
 
 
+class AdvertList(ListView):
+    model = Advert
+    template_name = 'callboard/adverts.html'
+    context_object_name = 'adverts'
+    paginate_by = 2
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'List of adverts'
+        return context
+
+
+class AdvertDetail(DetailView):  # class PostDetail(LoginRequiredMixin, DetailView):
+    model = Advert
+    template_name = 'callboard/advert.html'
+    context_object_name = 'advert'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Advert'
+        return context
+
+
+class AdvertCreate(CreateView):
+    form_class = AdvertForm
+    model = Advert
+    template_name = 'callboard/advert_create.html'
+    success_url = '/callboard/'
+
+    #   permission_required = ('news.add_post',)
+
+    def form_valid(self, form):
+        advert = form.save(commit=False)
+        advert.user = self.request.user
+        advert.save()
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+
+class AdvertUpdate(UpdateView):
+    form_class = AdvertForm
+    model = Advert
+    template_name = '/callboard/advert_update.html'
+    success_url = '/'
+
+    #    permission_required = ('news.change_post',)
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     return context
+
+
+class AdvertDelete(DeleteView):
+    model = Advert
+    template_name = 'callboard/advert_delete.html'
+    success_url = '/callboard/'
+
+
+#    permission_required = ('news.delete_post',)
+
+
+# ------подтверждение авторизации ---------
 class ConfirmUser(UpdateView):
     model = User
     context_object_name = 'confirm_user'
@@ -32,4 +101,3 @@ class ConfirmUser(UpdateView):
 
 class ProfileView(LoginRequiredMixin, TemplateView):
     template_name = 'callboard/profile.html'  # возвращаемся после авторизации
-

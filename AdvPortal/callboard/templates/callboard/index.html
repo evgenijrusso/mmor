@@ -6,6 +6,11 @@
 <h3>{% trans "List of adverts" %}</h3>
 
     {% for model in models %}
+<ul>
+   <li>{{model.title }} -  <b> {{ model.user }} </b></li>
+</ul>
+
+
     {% endfor %}
 
 {% endblock %}

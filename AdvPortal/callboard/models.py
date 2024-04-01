@@ -59,7 +59,6 @@ class Response(models.Model):
         related_name='responses'
     )
     accept = models.BooleanField(default=False, verbose_name='Accept')  # принимать пользователем объевления
-    created = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='Created data')
 
     def __str__(self):
         return f'{self.text[:30]}...'
@@ -70,4 +69,4 @@ class Response(models.Model):
     class Meta:
         verbose_name = _('Response')
         verbose_name_plural = _('Responses')
-        ordering = ['-created']
+        ordering = ['-response_date']

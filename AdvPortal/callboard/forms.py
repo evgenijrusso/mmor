@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from allauth.account.forms import SignupForm
 from string import hexdigits
 import random
@@ -30,21 +32,27 @@ class CommonSignupForm(SignupForm):
 
 
 class AdvertForm(forms.ModelForm):
-#    title = forms.CharField(max_length=30, widget=forms.TextInput(required=True))
+
+    created = forms.DateTimeField(initial=datetime.utcnow(), label=(_('Created data')))
     category = forms.CharField(
         max_length=20, empty_value='Категория не выбрана',
         widget=forms.Select(choices=CATEGORY)
     )
 
+    def __init__(self, *args, **kwargs):
+        super(AdvertForm, self).__init__(*args, **kwargs)
+
+        for visible in self.visible_fields():
+            visible.field.widget.attrs.update({'class': 'form-control'})
+
     class Meta:
         model = Advert
-        fields = ['user', 'title', 'content', 'category', 'price', 'contacts']
-        label = [_('User'), _('Title'), _('Content'), _('Category'), _('Price'), _('Contacts')]
+        fields = ['user', 'title', 'category', 'price', 'contacts', 'content']
+        label = [_('User'), _('Title'), _('Category'), _('Price'), _('Contacts'), _('Content')]
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-input', 'required': True}),
-            'content': forms.Textarea(attrs={'cols': 50, 'rows': 5}),
-            'contacts': forms.TextInput(attrs={'class': 'form-input'}),
-            'price': forms.NumberInput(attrs={'class': 'form-input'}),
+            'content': forms.Textarea(attrs={'cols': 20, 'rows': 5}),
+            'contacts': forms.TextInput(attrs={'cols': 30, 'rows': 5}),
         }
 
     def clean(self):

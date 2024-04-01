@@ -1,11 +1,13 @@
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
-from django.views.generic import View, UpdateView, TemplateView, \
+from django.views.generic import View, TemplateView, \
     ListView, DetailView, CreateView, DeleteView
+from django.views.generic.edit import UpdateView
 from django.http.response import HttpResponse
-from AdvPortal.callboard.models import Advert, User
-from AdvPortal.callboard.forms import AdvertForm
+from django.contrib import messages
+from callboard.models import Advert, User
+from callboard.forms import AdvertForm
 from datetime import date
 
 
@@ -33,7 +35,7 @@ class AdvertList(ListView):
 
 class AdvertDetail(DetailView):  # class PostDetail(LoginRequiredMixin, DetailView):
     model = Advert
-    template_name = 'callboard/advert.html'
+    template_name = 'callboard/advert_detail.html'
     context_object_name = 'advert'
 
     def get_context_data(self, **kwargs):
@@ -64,14 +66,19 @@ class AdvertCreate(CreateView):
 class AdvertUpdate(UpdateView):
     form_class = AdvertForm
     model = Advert
-    template_name = '/callboard/advert_update.html'
-    success_url = '/'
+   # fields = '__all__' #   ['user', 'title', 'category', 'price', 'contacts', 'content']  # '__all__'
+    template_name = 'callboard/advert_update.html'
+
 
     #    permission_required = ('news.change_post',)
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     return context
+    def get_object(self, **kwargs):
+        idu = self.kwargs.get('pk')
+        return Advert.objects.get(pk=idu)
+
+    def form_valid(self, form):
+        messages.success(self.request, "The task was updated successfully.")
+        return super(AdvertUpdate, self).form_valid(form)
 
 
 class AdvertDelete(DeleteView):

@@ -1,5 +1,5 @@
 from django.urls import path
-from AdvPortal.callboard.views import Index, ConfirmUser, ProfileView, AdvertList, AdvertCreate, \
+from callboard.views.advert import Index, ConfirmUser, ProfileView, AdvertList, AdvertCreate, \
     AdvertDetail, AdvertUpdate, AdvertDelete
 
 urlpatterns = [

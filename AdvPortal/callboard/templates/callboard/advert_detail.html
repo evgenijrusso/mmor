@@ -6,8 +6,8 @@
 {% block content %}
 <div class="container d-grid gap-3">
     <div class="p-2 border">
-    <a class="btn btn-secondary" type="button" onclick="window.history.back()">{% trans "Cancel" %}</a>
-    <a class="btn btn-secondary" href="/callboard/update/{{ advert.pk }}" role="button">{% trans "Update" %}</a>
+    <a class="btn btn-info" type="button" href="/callboard/">{% trans "Cancel" %}</a>
+    <a class="btn btn-secondary" href="{% url 'advert_update' advert.pk %}" role="button">{% trans "Update" %}</a>
     <a class="btn btn-primary"   href="/callboard/delete/{{ advert.pk }}" role="button">{% trans "Delete" %}</a>
     </div>
     <div class="p2 border"><h3>{% trans "User" %}: {{ advert.user.username }}</h3></div>

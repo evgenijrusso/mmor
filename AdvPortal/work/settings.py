@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'django_bootstrap5',
     'allauth',
     'allauth.account',
-    'callboard.apps.CallboardConfig',
+    'callboard',
 ]
 
 MIDDLEWARE = [

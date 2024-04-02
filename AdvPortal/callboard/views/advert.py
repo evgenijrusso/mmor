@@ -1,12 +1,13 @@
+from django.contrib import messages
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.shortcuts import render, redirect
-from django.views.generic import View, TemplateView, \
+from django.views.generic import View, \
     ListView, DetailView, CreateView, DeleteView
 from django.views.generic.edit import UpdateView
 from django.http.response import HttpResponse
-from django.contrib import messages
-from callboard.models import Advert, User
+
+from callboard.models import Advert
 from callboard.forms import AdvertForm
 from datetime import date
 
@@ -78,41 +79,12 @@ class AdvertUpdate(LoginRequiredMixin, UpdateView):
         return super(AdvertUpdate, self).form_valid(form)
 
 
-class AdvertDelete(DeleteView):
-    # permission_required = 'callboard.advert_delete'
-    # permission_denied_message = "Permission Denied"
+class AdvertDelete(PermissionRequiredMixin, DeleteView):
+    permission_required = 'callboard.advert_delete'
+    permission_denied_message = "Permission Denied"
     model = Advert
     template_name = 'callboard/advert_delete.html'
     context_object_name = 'advert'
     success_url = '/callboard/'
 
 
-# @login_required
-# @permission_required('callboard.advert_delete', raise_exception=True)
-# def listing_delete(request, listing_id):
-#     listing = User.objects.get(id=listing_id)
-#     if request.user == listing.user:
-#         listing.delete()
-#     return redirect('403.html')
-
-
-
-# ------подтверждение авторизации ---------
-
-class ConfirmUser(UpdateView):
-    model = User
-    context_object_name = 'confirm_user'
-
-    def post(self, request, *args, **kwargs):
-        if 'code' in request.POST:
-            user = User.objects.filter(code=request.POST['code'])
-            if user.exists():
-                user.update(is_active=True)
-                user.update(code=None)
-            else:
-                return render(self.request, template_name='callboard/invalid_code.html')
-        return redirect('account_login')
-
-
-class ProfileView(LoginRequiredMixin, TemplateView):
-    template_name = 'callboard/profile.html'  # возвращаемся после авторизации

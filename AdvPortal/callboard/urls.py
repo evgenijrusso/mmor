@@ -1,6 +1,7 @@
 from django.urls import path
-from callboard.views.advert import Index, ConfirmUser, ProfileView, AdvertList, AdvertCreate, \
+from callboard.views.advert import Index, AdvertList, AdvertCreate, \
     AdvertDetail, AdvertUpdate, AdvertDelete
+from callboard.views.confirm import ConfirmUser, ProfileView
 from callboard.views.response import ResponseList, ResponseDetail, ResponseCreate, ResponseUpdate, ResponseDelete
 
 urlpatterns = [
@@ -20,6 +21,6 @@ urlpatterns = [
     path('confirm/', ConfirmUser.as_view(), name='confirm_user'),
     path('profile/', ProfileView.as_view(), name='profile'),
 
-    path('accounts/', Index.as_view(), name='index'),  #  временно  http://127.0.0.1:8025/accounts
+    path('accounts/', Index.as_view(), name='index'),  # временно  http://127.0.0.1:8025/accounts
  #   path('messages/'?),
 ]

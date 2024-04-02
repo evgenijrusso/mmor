@@ -1,4 +1,5 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib import messages
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
@@ -26,7 +27,7 @@ class ResponseDetail(DetailView):
     context_object_name = 'response'
 
 
-class ResponseCreate(CreateView):
+class ResponseCreate(LoginRequiredMixin, CreateView):
     model = Response
     form_class = ResponseForm
     context_object_name = 'response'
@@ -41,7 +42,7 @@ class ResponseCreate(CreateView):
         return super(ResponseCreate, self).form_valid(form)
 
 
-class ResponseUpdate(UpdateView):
+class ResponseUpdate(LoginRequiredMixin, UpdateView):
     model = Response
     form_class = ResponseForm
     template_name = 'callboard/response_update.html'
@@ -55,7 +56,19 @@ class ResponseUpdate(UpdateView):
         return super(ResponseUpdate, self).form_valid(form)
 
 
-class ResponseDelete(DeleteView):
+class ResponseDelete(PermissionRequiredMixin, DeleteView):
+    permission_required = 'callboard.advert_delete'
+    permission_denied_message = "Permission Denied"
     model = Response
     template_name = 'callboard/response_delete.html'
     success_url = '/callboard/responses/'
+
+# @login_required
+# def response_accept(request, response_id):
+#     response = get_object_or_404(Response, id=response_id)
+#
+#     if not response.accept:
+#         response.accept = True
+#         response.save()
+#
+#     return redirect(f'/response/{response_id}/')

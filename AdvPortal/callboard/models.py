@@ -64,7 +64,7 @@ class Response(models.Model):
         return f'{self.text[:30]}...'
 
     def get_absolute_url(self):
-        return reverse('response_detail', kwargs={'pk': self.id})
+        return reverse('response_detail', kwargs={'pk': self.pk})
 
     class Meta:
         verbose_name = _('Response')

@@ -10,7 +10,7 @@ from django import forms
 from django.conf import settings
 from django.core.mail import send_mail
 
-from .models import Advert, CATEGORY
+from .models import Advert, Response, CATEGORY
 
 
 class CommonSignupForm(SignupForm):
@@ -33,7 +33,7 @@ class CommonSignupForm(SignupForm):
 
 class AdvertForm(forms.ModelForm):
 
-    created = forms.DateTimeField(initial=datetime.utcnow(), label=(_('Created data')))
+    # created = forms.DateTimeField(initial=datetime.utcnow(), label=(_('Created data')))
     category = forms.CharField(
         max_length=20, empty_value='Категория не выбрана',
         widget=forms.Select(choices=CATEGORY)
@@ -51,8 +51,8 @@ class AdvertForm(forms.ModelForm):
         label = [_('User'), _('Title'), _('Category'), _('Price'), _('Contacts'), _('Content')]
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-input', 'required': True}),
-            'content': forms.Textarea(attrs={'cols': 20, 'rows': 5}),
-            'contacts': forms.TextInput(attrs={'cols': 30, 'rows': 5}),
+            'content': forms.Textarea(attrs={'cols': 50, 'rows': 1}),
+            'contacts': forms.TextInput(attrs={'cols': 30, 'rows': 1}),
         }
 
     def clean(self):
@@ -65,3 +65,20 @@ class AdvertForm(forms.ModelForm):
             )
 
         return cleaned_data
+
+
+class ResponseForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(ResponseForm, self).__init__(*args, **kwargs)
+
+        for visible in self.visible_fields():
+            visible.field.widget.attrs.update({'class': 'form-control'})
+
+    class Meta:
+        model = Response
+        fields = ['user', 'advert', 'text']
+        label = [_('User'), _('Advert'), _('Text'), ]
+        widgets = {
+            'text': forms.Textarea(attrs={'cols': 50, 'rows': 1, 'required': True}),
+        }

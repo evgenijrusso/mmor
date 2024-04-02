@@ -56,7 +56,8 @@ class AdvertCreate(CreateView):
         advert = form.save(commit=False)
         advert.user = self.request.user
         advert.save()
-        return super().form_valid(form)
+        messages.success(self.request, "The advert was created successfully.")
+        return super(AdvertCreate, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -66,9 +67,7 @@ class AdvertCreate(CreateView):
 class AdvertUpdate(UpdateView):
     form_class = AdvertForm
     model = Advert
-   # fields = '__all__' #   ['user', 'title', 'category', 'price', 'contacts', 'content']  # '__all__'
     template_name = 'callboard/advert_update.html'
-
 
     #    permission_required = ('news.change_post',)
 
@@ -77,7 +76,7 @@ class AdvertUpdate(UpdateView):
         return Advert.objects.get(pk=idu)
 
     def form_valid(self, form):
-        messages.success(self.request, "The task was updated successfully.")
+        messages.success(self.request, "The advert was updated successfully.")
         return super(AdvertUpdate, self).form_valid(form)
 
 

@@ -1,5 +1,5 @@
 from django.urls import reverse_lazy
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.shortcuts import render, redirect
 from django.views.generic import View, TemplateView, \
     ListView, DetailView, CreateView, DeleteView
@@ -33,7 +33,7 @@ class AdvertList(ListView):
         return context
 
 
-class AdvertDetail(DetailView):  # class PostDetail(LoginRequiredMixin, DetailView):
+class AdvertDetail(DetailView):
     model = Advert
     template_name = 'callboard/advert_detail.html'
     context_object_name = 'advert'
@@ -44,7 +44,7 @@ class AdvertDetail(DetailView):  # class PostDetail(LoginRequiredMixin, DetailVi
         return context
 
 
-class AdvertCreate(CreateView):
+class AdvertCreate(LoginRequiredMixin, CreateView):
     form_class = AdvertForm
     model = Advert
     template_name = 'callboard/advert_create.html'
@@ -64,12 +64,10 @@ class AdvertCreate(CreateView):
         return context
 
 
-class AdvertUpdate(UpdateView):
+class AdvertUpdate(LoginRequiredMixin, UpdateView):
     form_class = AdvertForm
     model = Advert
     template_name = 'callboard/advert_update.html'
-
-    #    permission_required = ('news.change_post',)
 
     def get_object(self, **kwargs):
         idu = self.kwargs.get('pk')
@@ -81,15 +79,26 @@ class AdvertUpdate(UpdateView):
 
 
 class AdvertDelete(DeleteView):
+    # permission_required = 'callboard.advert_delete'
+    # permission_denied_message = "Permission Denied"
     model = Advert
     template_name = 'callboard/advert_delete.html'
+    context_object_name = 'advert'
     success_url = '/callboard/'
 
 
-#    permission_required = ('news.delete_post',)
+# @login_required
+# @permission_required('callboard.advert_delete', raise_exception=True)
+# def listing_delete(request, listing_id):
+#     listing = User.objects.get(id=listing_id)
+#     if request.user == listing.user:
+#         listing.delete()
+#     return redirect('403.html')
+
 
 
 # ------подтверждение авторизации ---------
+
 class ConfirmUser(UpdateView):
     model = User
     context_object_name = 'confirm_user'

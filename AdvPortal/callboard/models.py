@@ -27,7 +27,7 @@ class Advert(models.Model):
     title = models.CharField(_('Title'), max_length=100)
     content = models.TextField(_('Description'))  # Описание
     price = models.DecimalField(_('Price'), null=True, blank=True, max_digits=7, decimal_places=1)
-    contacts = models.TextField(_('Contacts'))  # Контакты
+    contacts = models.TextField(_('Contacts'), blank=True, null=True)  # Контакты
     created = models.DateTimeField(auto_now_add=True, verbose_name='Created data')
     file = models.FileField("File", upload_to="files/", blank=True, null=True)
 

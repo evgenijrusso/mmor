@@ -4,8 +4,7 @@
 
 {% block content %}
 
- <div class="container px-lg-3">
-    <div class="flex mt-3 mb-2">
+     <div class="flex mt-3 mb-2">
         <a class="btn btn-primary" href='{%url "advert_create" %}' role="button">{% trans "Create Adverts" %}</a>
     </div>
     <h3>{% trans "Number of adverts" %}:  {{ page_obj.paginator.count }}  </h3>
@@ -16,8 +15,6 @@
       <h5>{% trans "User" %}: {{ adv.user }} </h5>
       <h5>{% trans "Current date" %}: {{ adv.created|date:'d M Y' }} </h5>
       <h5> {% trans "Category" %}: {{ adv.category }} </h5>
-      <h5> {% trans "Price" %}: {{ adv.price }} </h5>
-      <h5> {% trans "Contacts" %}: {{ adv.contacts }} </h5>
       <h6>{% trans "Content" %}: {{ adv.content|truncatechars:100 }}</h6>
       </div>
     {% empty %}

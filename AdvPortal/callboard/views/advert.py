@@ -26,12 +26,22 @@ class AdvertList(ListView):
     model = Advert
     template_name = 'callboard/adverts.html'
     context_object_name = 'adverts'
-    paginate_by = 2
+    paginate_by = 3
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'List of adverts'
         return context
+
+
+
+class AdvertListUser(LoginRequiredMixin, ListView):
+    template_name = 'callboard/adverts_user.html'
+    context_object_name = 'adverts'
+    paginate_by = 3
+
+    def get_queryset(self):
+        return Advert.objects.filter(user=self.request.user).order_by('-created')
 
 
 class AdvertDetail(DetailView):

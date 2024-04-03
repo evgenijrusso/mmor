@@ -1,16 +1,18 @@
 from django.urls import path
 from callboard.views.advert import Index, AdvertList, AdvertCreate, \
-    AdvertDetail, AdvertUpdate, AdvertDelete
+    AdvertDetail, AdvertUpdate, AdvertDelete, AdvertListUser
 from callboard.views.confirm import ConfirmUser, ProfileView
 from callboard.views.response import ResponseList, ResponseDetail, ResponseCreate, ResponseUpdate, ResponseDelete
 
 urlpatterns = [
     path('', Index.as_view(), name='index'),  # http://127.0.0.1:8025
     path('callboard/', AdvertList.as_view(), name='advert_list'),  # {% url "advert_list" %}
+    # path('callboard/users', AdvertListUser.as_view(), name='advert_list_users'),
     path('callboard/<int:pk>', AdvertDetail.as_view(), name='advert_detail'),
     path('callboard/create', AdvertCreate.as_view(), name='advert_create'),
     path('callboard/update/<int:pk>', AdvertUpdate.as_view(), name='advert_update'),
     path('callboard/delete/<int:pk>', AdvertDelete.as_view(), name='advert_delete'),
+
 
     path('callboard/responses/', ResponseList.as_view(), name='response_list'),
     path('callboard/response/<int:pk>', ResponseDetail.as_view(), name='response_detail'),

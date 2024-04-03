@@ -63,12 +63,15 @@ class ResponseDelete(PermissionRequiredMixin, DeleteView):
     template_name = 'callboard/response_delete.html'
     success_url = '/callboard/responses/'
 
-# @login_required
-# def response_accept(request, response_id):
-#     response = get_object_or_404(Response, id=response_id)
-#
-#     if not response.accept:
-#         response.accept = True
-#         response.save()
-#
-#     return redirect(f'/response/{response_id}/')
+
+class ResponseUserList(LoginRequiredMixin, ListView):
+    """ Отклики пользователей на объявление """
+    template_name = 'reply_users_to_advert'
+    context_object_name = 'adverts'
+    paginate_by = 10
+
+    # def get_queryset(self):
+    #     queryset = Advert.objects.filter(user=self.request.user, accept=True)
+
+    # queryset = Post.objects.filter(comment_post__user=self.request.user, comment_post__status=True).order_by('-date')
+    #response_advert.accept

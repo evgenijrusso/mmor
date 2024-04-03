@@ -47,12 +47,11 @@ class AdvertForm(forms.ModelForm):
 
     class Meta:
         model = Advert
-        fields = ['user', 'title', 'category', 'price', 'contacts', 'content']
-        label = [_('User'), _('Title'), _('Category'), _('Price'), _('Contacts'), _('Content')]
+        fields = ['user', 'title', 'category', 'content']
+        label = [_('User'), _('Title'), _('Category'),  _('Content')]
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-input', 'required': True}),
             'content': forms.Textarea(attrs={'cols': 50, 'rows': 1}),
-            'contacts': forms.TextInput(attrs={'cols': 30, 'rows': 1}),
         }
 
     def clean(self):

@@ -26,8 +26,6 @@ class Advert(models.Model):
     category = models.CharField(_('Category'), max_length=20, choices=CATEGORY)
     title = models.CharField(_('Title'), max_length=100)
     content = models.TextField(_('Description'))  # Описание
-    price = models.DecimalField(_('Price'), null=True, blank=True, max_digits=7, decimal_places=1)
-    contacts = models.TextField(_('Contacts'), blank=True, null=True)  # Контакты
     created = models.DateTimeField(auto_now_add=True, verbose_name='Created data')
     file = models.FileField("File", upload_to="files/", blank=True, null=True)
 
@@ -36,6 +34,10 @@ class Advert(models.Model):
 
     def get_absolute_url(self):  # 'pk' как в url.py, иначе не работает
         return reverse('advert_detail', kwargs={'pk': self.pk})  # как вариант f'/adverts/{self.id}'
+
+    def reply(self):
+        return Response.objects.filter(pk=self.pk)
+
 
     class Meta:
         verbose_name = _('Advert')
@@ -65,6 +67,14 @@ class Response(models.Model):
 
     def get_absolute_url(self):
         return reverse('response_detail', kwargs={'pk': self.pk})
+
+    def status_on(self):
+        self.status = True
+        self.save()
+
+    def status_off(self):
+        self.status = False
+        self.save()
 
     class Meta:
         verbose_name = _('Response')

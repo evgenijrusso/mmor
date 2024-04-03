@@ -27,7 +27,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')  #'django-insecure-uf=nofj($+j8w(%#49x(##ss
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 SITE_URL = 'http://localhost:8025'
 SITE_ID = 1
 

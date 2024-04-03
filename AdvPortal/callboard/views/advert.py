@@ -9,17 +9,16 @@ from django.http.response import HttpResponse
 
 from callboard.models import Advert
 from callboard.forms import AdvertForm
-from datetime import date
 
 
-class Index(View):
+class Index(View):   # пока закомментировал (убрал контекст)
 
     def get(self, request):
         models = Advert.objects.all()
         context = {
             'models': models,
         }
-        return HttpResponse(render(request, 'callboard/index.html', context))
+        return HttpResponse(render(request, 'callboard/index.html', ))
 
 
 class AdvertList(ListView):
@@ -34,9 +33,8 @@ class AdvertList(ListView):
         return context
 
 
-
 class AdvertListUser(LoginRequiredMixin, ListView):
-    template_name = 'callboard/adverts_user.html'
+    template_name = 'callboard/index.html'
     context_object_name = 'adverts'
     paginate_by = 3
 

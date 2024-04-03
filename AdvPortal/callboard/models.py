@@ -38,7 +38,6 @@ class Advert(models.Model):
     def reply(self):
         return Response.objects.filter(pk=self.pk)
 
-
     class Meta:
         verbose_name = _('Advert')
         verbose_name_plural = _('Advert')
@@ -69,11 +68,11 @@ class Response(models.Model):
         return reverse('response_detail', kwargs={'pk': self.pk})
 
     def status_on(self):
-        self.status = True
+        self.accept = True
         self.save()
 
     def status_off(self):
-        self.status = False
+        self.accept = False
         self.save()
 
     class Meta:

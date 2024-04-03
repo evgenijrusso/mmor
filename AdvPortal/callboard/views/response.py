@@ -7,6 +7,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.shortcuts import get_object_or_404, render, redirect
 from ..models import Response, Advert
 from ..forms import ResponseForm
+from ..filter import AdvertFilter
 
 
 class ResponseList(ListView):
@@ -66,12 +67,31 @@ class ResponseDelete(PermissionRequiredMixin, DeleteView):
 
 class ResponseUserList(LoginRequiredMixin, ListView):
     """ Отклики пользователей на объявление """
-    template_name = 'reply_users_to_advert'
+    template_name = 'callboard/responses.html'  # 'reply_users_to_advert'
     context_object_name = 'adverts'
-    paginate_by = 10
+    paginate_by = 5
 
-    # def get_queryset(self):
-    #     queryset = Advert.objects.filter(user=self.request.user, accept=True)
+    def get_queryset(self):
+        queryset = Advert.objects.filter(
+            responses__user=self.request.user, responses__accept=True).order_by('-date')
+        self.filterset = AdvertFilter(self.request.GET, queryset)
+        return self.filterset.qs
 
-    # queryset = Post.objects.filter(comment_post__user=self.request.user, comment_post__status=True).order_by('-date')
-    #response_advert.accept
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filterset'] = self.filterset
+        return context
+
+
+@login_required
+def reply_on(request, pk):
+    obj = Response.objects.get(id=pk)
+    obj.status_on()
+    return redirect('response_detail', id)
+
+
+@login_required
+def reply_off(request, pk):
+    obj = Response.objects.get(id=pk)
+    obj.status_off()
+    return redirect('response_detail', obj.id)

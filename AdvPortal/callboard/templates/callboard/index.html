@@ -3,11 +3,11 @@
 {% block title %} index {% endblock title %}
 
 {% block content %}
-<h3>{% trans "List of adverts" %}</h3>
-
+<!--<h3>{% trans "List of adverts" %}</h3>-->
+     {{ adverts.user }}
     {% for model in models %}
 <ul>
-   <li>{{model.title }} -  <b> {{ model.user }} </b></li>
+   <li> <b> {{ model.user }} </b></li>
 </ul>
 
 
